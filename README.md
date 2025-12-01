@@ -1,0 +1,66 @@
+ # Příklad - konzultační hodina
+
+Task manager which stores data in a MySQL database. The program .. add tasks, view, tasks, update task (status) and remove tasks.
+It includes also automated possitive and negative tests using pytest and MySQL Workbench (functions add task, update task and remove taks).
+
+## Requirments
+- dotenv
+- pytest
+- mysql-connector-python
+
+### dotenv
+Plugin for loading configuration from `.env` file
+##### Windows
+`pip install python-dotenv`
+`python -m pip install python-dotenv`
+##### MacOS
+`python3 -m pip install python-dotenv`
+`pip3 install python-dotenv` -> Windows 
+
+### pyTest
+##### Windows
+`pip install pytest`
+`python -m pip install pytest`
+##### MacOS
+`pip3 install pytest`
+`python3 -m pip install pytest`
+
+### mysql-connector-python
+##### Windows
+`pip install mysql-connector-python`
+`python -m pip install mysql-connector-python`
+
+##### MacOS
+`pip3 install mysql-connector-python`
+`python3 -m pip install mysql-connector-python`
+
+## Configuration
+In the main folder in the `.env` file configure the necessary login information to connect to the db
+
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=1111
+DB_NAME=tasks
+```
+
+## Launch
+
+Run `main.py`
+
+## Test
+in the terminal in the root folder run the command `pytest`
+
+## Program directory structure
+```
+project/
+├─ src/
+│ ├─ __init_.py
+│ ├─ db.py <-- Contains all functions for working with the db
+│ └─ knihovna.py <-- Contains all functions managing the application logic
+├─ tests/
+│ ├─ __init_.py
+│ └─ test_knihovna.py <-- Contains all tests
+├─ main.py <-- Entry point to the application
+└─ README.md <-- Introductory documentation
+```
