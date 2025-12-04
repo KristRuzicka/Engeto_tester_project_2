@@ -18,8 +18,8 @@ task_statuses = {
 }
 
 def db_connection(prefix = ""):
-    """Function creates connection to mysql
-    and creates database."""
+    """Creates connection to mysql
+    and creates database. Checks for error"""
     try:
         conn = mysql.connector.connect(
             host = os.getenv("DB_HOST"),
@@ -44,11 +44,11 @@ def db_connection(prefix = ""):
 
  
 def create_db(cursor, db_name):
-    """Function creates database if not exists."""
+    """Creates database if not exists."""
     cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name};")
 
 def create_table(conn):
-    """Function creates table for saving tasks. Checks for error."""
+    """Creates table for saving tasks. Checks for error."""
     try:
         with conn.cursor() as cursor:
             # status ENUM('Not started', 'In progress','Done') DEFAULT 'Not started',
@@ -86,7 +86,7 @@ def create_data(conn):
 
     try:
         with conn.cursor() as cursor:
-            # Check if table is empty
+            # Checks if table is empty
             cursor.execute(f"SELECT COUNT(*) FROM {table}")
             sum = cursor.fetchone()[0]
 
@@ -125,7 +125,7 @@ def add_task_db(conn, name, description):
         raise Exception(f"Error - the task has not been added: {e}")
 
 def view_task_db(conn: MySQLConnection, filter_option=None):
-
+    """Returns task according to selected option. Checks for empty entry."""
     try:
         with conn.cursor(dictionary=True) as cursor:
             if filter_option == "1" or filter_option is None:
@@ -153,7 +153,7 @@ def view_task_db(conn: MySQLConnection, filter_option=None):
         
 
 def return_tasks(conn: MySQLConnection):
-    """Return all tasks form the database as a list dictionary."""
+    """Returns all tasks form the database as a list dictionary."""
     try:
         with conn.cursor(dictionary=True) as cursor:
             cursor.execute(f"SELECT id, name, description, status, date FROM {table}")
@@ -170,7 +170,7 @@ def return_one_task(conn: MySQLConnection, id):
             task = cursor.fetchone()
             return task
     except Exception:
-        print(f"{sep_short}\nError - tasks cannot be viewed")
+        print(f"{sep_short}\nError - Task doesn't exist.")
     
     
 def update_task_db(conn: MySQLConnection, id, new_status):
