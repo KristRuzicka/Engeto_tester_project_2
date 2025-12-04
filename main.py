@@ -1,7 +1,7 @@
 from src.db import db_connection, create_table
 from src.tasks import view_tasks, update_status, add_task, remove_task
 
-sep_short = "="*40
+sep_short = "="*50
 
 def main_function(conn):
     while True:
