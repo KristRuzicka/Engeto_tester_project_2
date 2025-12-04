@@ -1,6 +1,6 @@
 from src.db import task_statuses, return_tasks, return_one_task, add_task_db, update_task_db, remove_task_db, view_task_db
 
-sep_short = "="*40
+sep_short = "="*50
 sep_long = "_"*80
 
 def view_tasks(conn):
@@ -19,7 +19,7 @@ def view_tasks(conn):
     tasks = view_task_db(conn, filter_option)
 
     if not tasks:
-        print(f"{sep_short}\nNo task found.")
+        print(f"{sep_short}\nThere are no saved tasks 'In progress'.")
         return
     
     print_tasks(tasks)
@@ -44,13 +44,27 @@ def print_tasks(tasks):
     print(sep_long)
 
 def print_all_tasks(conn):
-    tasks = view_task_db(conn, "1")
-    print_tasks(tasks)
+
+    try:
+        tasks = view_task_db(conn, "1")
+
+        if not tasks:
+            print(f"{sep_short}\nNo task found.")
+            return False
+        
+        print_tasks(tasks)
+        return True
+
+    except Exception as e:
+        print(f"{sep_short}\nError: {e}.")
+        return False
 
 def update_status(conn):
     """Function update task status."""
     
-    print_all_tasks(conn)
+    if not print_all_tasks(conn):
+        print("There are no saved tasks yet.")
+        return
 
     # User enters task id which should be amended.
     try:
@@ -71,13 +85,17 @@ def update_status(conn):
         if new_status not in task_statuses:
             print(f"{sep_short}\nError: Invalid status number.")
             return
+        
+        update_task_db(conn, id, task_statuses[new_status])
         print(f"{sep_short}\nTask status has been updated to '{task_statuses[new_status]}'.")
+    
     
     # Check for valid status number
     except ValueError:
         print(f"{sep_short}\nError: Invalid entry.")
     except Exception as e:
         print(f"{sep_short}\nError: Task status not udpated: {e}.")
+
 
 def add_task(conn):
     '''Function takes input from user and add new tasks to database'''
@@ -114,23 +132,32 @@ def get_input(entry):
             return None
 
 def remove_task(conn):
-    """Function update task status."""
+    """Function removes selected task."""
+    if not print_all_tasks(conn):
+        print("There are no saved tasks yet.")
+        return
     
-    print_all_tasks(conn)
     # Task removal
     try:
-        selected_id = int(input("""\nEnter number of task to be removed: """).strip())
-       # Check for id of non existing task.
-    
-        # if not return_one_task(conn, selected_id):
-        # print(f"Error: Task ID {selected_id} doesn't exist.")
-        # return
+        selected_id = get_input("""\nEnter number of task to be removed: """)
         
+        if selected_id is None:
+            print(f"{sep_short}\nError - ID not entered.")
+            return
+        try: 
+            selected_id = int(selected_id)
+        except ValueError:
+            print(f"{sep_short}\nError: Invalid entry.")
+            return
+        
+        task = return_one_task(conn, selected_id)
+        if not task:
+            print(f"{sep_short}\nError: Task with ID {selected_id} does not exist.")
+            return
+
         remove_task_db(conn, selected_id)
         print(f"{sep_short}\nTask {selected_id} has been removed.")
-    
+
     # Check for invalid task number
-    except ValueError:
-        print(f"{sep_short}\nError: Invalid entry.")
     except Exception as e:
         print(f"{sep_short}\nError: Task not removed: {e}.")
