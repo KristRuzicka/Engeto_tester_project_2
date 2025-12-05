@@ -1,7 +1,46 @@
 from src.db import task_statuses, return_tasks, return_one_task, add_task_db, update_task_db, remove_task_db, view_task_db
+from rich.table import Table
+from rich.console import Console
 
 sep_short = "="*50
 sep_long = "_"*80
+
+console = Console()
+
+def color_for_status(status: str) -> str:
+    status = status.lower()
+    if status == "not started":
+        return "red"
+    elif status == "in progress":
+        return "yellow"
+    elif status == "done":
+        return "green"
+    return "white"  # default
+
+def print_tasks(tasks):
+    table = Table(title="Tasks", header_style="white")
+
+    table.add_column("ID")
+    table.add_column("Name")
+    table.add_column("Description")
+    table.add_column("Status")
+    table.add_column("Date")
+
+    for task in tasks:
+        id = str(task["id"])
+        name = (task["name"][:20] + "...") if len(task["name"]) > 20 else task["name"]
+        description = (task["description"][:25] + "...") if len(task["description"]) > 25 else task["description"]
+        status = task["status"]
+        date = task["date"].strftime("%Y-%m-%d") if task["date"] else ""
+        
+        row_style = color_for_status(status)
+
+        table.add_row(
+            id, name, description, status, date,
+            style=row_style)
+
+    console.print(table)
+
 
 def view_tasks(conn):
     """Function prints all tasks from the database."""
@@ -24,25 +63,6 @@ def view_tasks(conn):
     
     print_tasks(tasks)
     
-def print_tasks(tasks):
-    print(sep_long,
-          "\n{:<5} {:<20} {:<25} {:<12} {:<19}"
-            .format("ID","Name","Description","Status","Date"), 
-        )
-    print(sep_long)
-
-    for task in tasks:
-        id = task['id']
-        name = (task['name'][:20] + "...") if len(task['name']) > 20 else task['name']
-        description = (task['description'][:20] + "...") if len(task['description']) > 20 else task['description']
-        status = task['status']
-        date = task['date'].strftime("%Y-%m-%d") if task['date'] else ""
-        print(
-            "{:<5} {:<20} {:<25} {:<12} {:<19}"
-            .format(id,name,description,status,date,)
-        )
-    print(sep_long)
-
 def print_all_tasks(conn):
 
     try:
