@@ -80,7 +80,7 @@ def print_all_tasks(conn):
         return False
 
 def update_status(conn):
-    """Function update task status."""
+    """Function update task status and checks for invalid entry."""
     
     if not print_all_tasks(conn):
         print("There are no saved tasks yet.")
@@ -118,7 +118,7 @@ def update_status(conn):
 
 
 def add_task(conn):
-    '''Function takes input from user and add new tasks to database'''
+    """Function takes input from user and add new tasks to database."""
 
     name = get_input("Enter task name: ")
     if name is None:
@@ -138,8 +138,8 @@ def add_task(conn):
 
 
 def get_input(entry):
-    '''Function takes input from user. 
-    Checks for empty and interupted entry.'''
+    """Function takes input from user. 
+    Checks for empty and interupted entry."""
     while True:
         try:
             value = input(entry).strip()
