@@ -1,12 +1,13 @@
  # Příklad - konzultační hodina
 
-Task manager which stores data in a MySQL database. The program .. add tasks, view, tasks, update task (status) and remove tasks.
-It includes also automated possitive and negative tests using pytest and MySQL Workbench (functions add task, update task and remove taks).
+Task Manager which stores data in a MySQL database. The program allows you to: add tasks, view, tasks (according to status), update task status and remove tasks.
+The project also includesautomated possitive and negative tests using pytest and a test MySQL database covering functions: add task, update task and remove taks.
 
 ## Requirments
 - dotenv
 - pytest
 - mysql-connector-python
+- rich
 
 ### dotenv
 Plugin for loading configuration from `.env` file
@@ -34,6 +35,15 @@ Plugin for loading configuration from `.env` file
 `pip3 install mysql-connector-python`
 `python3 -m pip install mysql-connector-python`
 
+### rich
+##### Windows
+`pip install rich`
+`python -m pip install rich`
+##### MacOS
+`pip3 install rich`
+`python3 -m pip install rich`
+
+
 ## Configuration
 In the main folder in the `.env` file configure the necessary login information to connect to the db
 
@@ -57,10 +67,10 @@ project/
 ├─ src/
 │ ├─ __init_.py
 │ ├─ db.py <-- Contains all functions for working with the db
-│ └─ knihovna.py <-- Contains all functions managing the application logic
+│ └─ tasks.py <-- Contains all functions managing the application logic
 ├─ tests/
 │ ├─ __init_.py
-│ └─ test_knihovna.py <-- Contains all tests
+│ └─ test_tasks.py <-- Contains all tests
 ├─ main.py <-- Entry point to the application
 └─ README.md <-- Introductory documentation
 ```
