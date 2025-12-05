@@ -4,6 +4,7 @@ from src.tasks import view_tasks, update_status, add_task, remove_task
 sep_short = "="*50
 
 def main_function(conn):
+    """Main navigation menu for selecting action."""
     while True:
         print(f"{sep_short}\nTask manager - Main menu\n" 
         "1. Add new task\n"
