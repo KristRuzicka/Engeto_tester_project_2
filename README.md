@@ -1,4 +1,4 @@
- # Příklad - konzultační hodina
+ # Task Manager
 
 Task Manager which stores data in a MySQL database. The program allows you to: add tasks, view, tasks (according to status), update task status and remove tasks.
 The project also includesautomated possitive and negative tests using pytest and a test MySQL database covering functions: add task, update task and remove taks.
