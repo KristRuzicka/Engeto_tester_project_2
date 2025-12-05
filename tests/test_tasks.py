@@ -26,8 +26,7 @@ def return_random_task(conn):
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(f"SELECT id from {table}")
         tasks_ids = cursor.fetchall()
-    task_id = random.choice(tasks_ids)
-    return task_id["id"]
+    return random.choice(tasks_ids)["id"]
 
 def test_add_task_positive(conn):
     """This test tests the task is added."""
@@ -93,7 +92,7 @@ def test_update_task_negative(conn):
     
     # Act 
     with pytest.raises(Exception) as e:
-        result = update_task_db(conn, task_id, status = "")
+        update_task_db(conn, task_id, "")
     
     print(e.value)
 
@@ -107,15 +106,14 @@ def test_remove_task_positive(conn):
     
     # Assert 
     with conn.cursor(dictionary=True) as cursor:
-            cursor.execute(f"""DELETE FROM {table} 
+            cursor.execute(f"""SELECT * FROM {table} 
                         WHERE id = %s""", (task_id,))
             tasks = cursor.fetchall()
     assert result == True
+    assert len(tasks) == 0
 
 def test_remove_task_negative(conn):
-    """This test tests if the task is removed."""
-    # Arrange - get random task
-    task_id = return_random_task(conn)
+    """This test tests Exception return when is task_id empty."""
     
     # Act 
     with pytest.raises(Exception) as e:
