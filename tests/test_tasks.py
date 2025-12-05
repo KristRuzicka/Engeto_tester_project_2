@@ -21,7 +21,7 @@ def conn():
     conn.close()
 
 def return_random_task(conn):
-    """pomocna funkce na vyber nahodneho ID knihy pro testy"""
+    """Returns random task id."""
 
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(f"SELECT id from {table}")
